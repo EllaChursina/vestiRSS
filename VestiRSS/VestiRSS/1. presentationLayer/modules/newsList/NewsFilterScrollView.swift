@@ -10,8 +10,22 @@ import UIKit
 
 final class NewsFilterScrollView: UIScrollView {
     
+    // MARK: Data
+    
+    var categories = [String]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.setupView()
+            }
+        }
+    }
+    
+    var currentButton: FilterButton!
+    // MARK: Contsraints
+    
     var leadingContraint: NSLayoutXAxisAnchor!
     var trailingButtonContraint: NSLayoutConstraint!
+    
     // MARK: Initialization
     
     override init(frame: CGRect) {
@@ -35,36 +49,45 @@ final class NewsFilterScrollView: UIScrollView {
     private func setupView() {
         
         leadingContraint = self.leadingAnchor
-        for i in 0..<20 {
-            let filterButton = UIButton.init(frame: CGRect.zero)
+        guard !categories.isEmpty else { return }
+        for category in categories {
+            let filterButton = FilterButton.init(frame: CGRect.zero)
             filterButton.translatesAutoresizingMaskIntoConstraints = false
-            
-            filterButton.backgroundColor = UIColor.blue
+            filterButton.sizeThatFits(CGSize.zero)
             addSubview(filterButton)
-            
-            setupLayout(for: filterButton, title: i)
+            if category == "Главные" {
+                currentButton = filterButton
+            }
+            setupLayout(for: filterButton, title: category)
         }
-        trailingButtonContraint.isActive = true 
+        trailingButtonContraint.isActive = true
+        currentButton.isHighlighted = true
         
     }
     
-    private func setupLayout(for button: UIButton, title: Int) {
+    private func setupLayout(for button: FilterButton, title: String) {
+        
         NSLayoutConstraint.activate([
             button.leadingAnchor.constraint(equalTo: leadingContraint, constant: 5),
-            button.centerYAnchor.constraint(equalTo: centerYAnchor),
-            button.heightAnchor.constraint(equalToConstant: 100),
-            button.widthAnchor.constraint(equalToConstant: 75)
+            button.topAnchor.constraint(equalTo: topAnchor),
+            button.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
         
         leadingContraint = button.trailingAnchor
         trailingButtonContraint = button.trailingAnchor.constraint(equalTo: trailingAnchor)
-        button.setTitle("Button \(title)", for: .normal)
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(scrollViewButtonAction), for: .touchUpInside)
     }
     
     @objc private func scrollViewButtonAction(_ sender: Any?){
-        if let t_sender = sender as? UIButton {
+        if let senderButton = sender as? FilterButton {
+            currentButton.isHighlighted = false
+            currentButton = senderButton
+            currentButton.isHighlighted = true
         }
     }
+    
+    func configure(with data: [String]) {
+        categories = data
+    }
 }
-

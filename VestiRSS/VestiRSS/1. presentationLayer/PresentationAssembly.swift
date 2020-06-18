@@ -8,16 +8,23 @@
 
 import UIKit
 
-protocol IPresentationAssembly {
+protocol PresentationAssembly {
     
     func newsListViewController() -> NewsListViewController
     
     func newsViewController() -> NewsViewController
 }
 
-final class PresentationAssembly: IPresentationAssembly {
+final class PresentationAssemblyImpl: PresentationAssembly {
+    
+    private let serviceAssembly: ServiceAssembly
+    
+    init(serviceAssembly: ServiceAssembly) {
+        self.serviceAssembly = serviceAssembly
+    }
+    
     func newsListViewController() -> NewsListViewController {
-        let vc = NewsListViewController(presentationAssembly: self)
+        let vc = NewsListViewController(presentationAssembly: self, networkManager: serviceAssembly.networkManager)
         return vc
     }
     
@@ -25,7 +32,5 @@ final class PresentationAssembly: IPresentationAssembly {
         let vc = NewsViewController()
         return vc
     }
-    
-    
 }
 

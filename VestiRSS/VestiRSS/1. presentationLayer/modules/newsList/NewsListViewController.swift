@@ -13,91 +13,163 @@ final class NewsListViewController: UIViewController {
     // MARK: DI
     
     private let presentationAssembly: PresentationAssembly
+    private let networkManager: NetworkManager
     
-    // MARK: Views
+    // MARK: UI
+    
+    private lazy var newsFilterScrollView : NewsFilterScrollView = {
+        let newsFilterScrollView = NewsFilterScrollView(frame: CGRect.zero)
+        newsFilterScrollView.accessibilityIdentifier = "newsFilterScrollView"
+        newsFilterScrollView.backgroundColor = .white
+        return newsFilterScrollView
+    }()
     
     private let newsListTableView = UITableView()
     
-    private var rssItems: [RSSNewsItem]?
+    private let refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+        
+        return refreshControl
+    }()
     
-    init(presentationAssembly: PresentationAssembly) {
+    // MARK: Data
+    
+    private var rssItems = [RSSNewsItem]()
+    private var categories = [String]()
+    
+    // MARK: Initialization
+    
+    init(presentationAssembly: PresentationAssembly, networkManager: NetworkManager) {
         self.presentationAssembly = presentationAssembly
+        self.networkManager = networkManager
+        
         super.init(nibName: nil, bundle: nil)
+        fetchCategories()
+        newsFilterScrollView.configure(with: categories)
+        setupView()
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         prepareTableView()
-        
         fetchData()
     }
     
-    private func prepareTableView() {
+    private func setupView() {
+        view.addSubview(newsFilterScrollView)
         view.addSubview(newsListTableView)
+        
+        setupLayout()
+    }
+    
+    private func setupLayout() {
+        
+        newsFilterScrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            newsFilterScrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            newsFilterScrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            newsFilterScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            newsFilterScrollView.heightAnchor.constraint(equalToConstant: 100)
+        ])
         
         newsListTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             newsListTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             newsListTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            newsListTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            newsListTableView.topAnchor.constraint(equalTo: newsFilterScrollView.bottomAnchor),
             newsListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    private func prepareTableView() {
+        view.addSubview(newsListTableView)
+        
+        
         
         newsListTableView.dataSource = self
         newsListTableView.delegate = self
         
-        newsListTableView.register(NewsListCell.self, forCellReuseIdentifier: NewsListCell.identifier)
+        newsListTableView.refreshControl = refreshControl
+        
+        newsListTableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
     }
     
-    private func fetchData(){
-        let newsListParser = NewsListParser()
-        newsListParser.parseFeed(url: "https://www.vesti.ru/vesti.rss") { (rssItems) in
-            self.rssItems = rssItems
-            
+    private func fetchData() {
+        networkManager.downloadData { [weak self] rssItems in
             DispatchQueue.main.async {
-                self.newsListTableView.reloadSections(IndexSet(integer: 0), with: .left)
+                self?.rssItems = rssItems
+                self?.newsListTableView.reloadData()
+            }
+        }
+        
+        
+    }
+    
+    private func fetchCategories() {
+        networkManager.downloadCategories { [weak self] categories in
+            DispatchQueue.main.async {
+                print(categories)
+                self?.newsFilterScrollView.categories = categories
+
             }
         }
     }
+    
+    @objc private func refresh(sender: UIRefreshControl) {
+        rssItems = [RSSNewsItem]()
+        fetchData()
+        newsListTableView.reloadData()
+        sender.endRefreshing()
+    }
 }
+
+// MARK: UITableViewDataSource
 
 extension NewsListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let rssItems = rssItems else {
-            return 0
-        }
-        
         return rssItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: NewsListCell = tableView.dequeue(for: indexPath)
-        var newsItem: NewsCell
-        if let item = rssItems?[indexPath.item]{
-            newsItem = NewsCell(title: item.title, publicationTime: item.pubDate)
-            cell.configure(with: newsItem)
-        }
+        let cell: NewsCell = tableView.dequeue(for: indexPath)
+        
+        let item = rssItems[indexPath.row]
+        let newsItem = NewsCellViewModel(title: item.title, publicationTime: item.pubDate)
+        cell.configure(with: newsItem)
         
         return cell
     }
 }
 
+// MARK: UITableViewDelegate
+
 extension NewsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         let vc = presentationAssembly.newsViewController()
-        var newsItem: NewsViewModel
-        if let item = rssItems?[indexPath.item]{
-            newsItem = NewsViewModel(newsImageURL: item.imageURL, title: item.title, publicationTime: item.pubDate, description: item.description)
-            vc.configure(with: newsItem)
-            navigationController?.pushViewController(vc, animated: true)
+        let rssItem = rssItems[indexPath.row]
+        var newsImage: UIImage?
+        networkManager.downloadImage(with: rssItem.imageURL) { image in
+            newsImage = image
         }
+        let newsItem = NewsViewModel(image: newsImage,
+                                     title: rssItem.title,
+                                     publicationTime: rssItem.pubDate,
+                                     description: rssItem.description)
+        vc.configure(with: newsItem)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
+

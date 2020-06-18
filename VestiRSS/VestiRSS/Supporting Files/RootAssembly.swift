@@ -9,5 +9,9 @@
 import Foundation
 
 class RootAssembly {
-    lazy var presentationAssembly: IPresentationAssembly = PresentationAssembly()
+    private lazy var coreAssembly: CoreAssembly = CoreAssemblyImpl() 
+    
+    private lazy var serviceAssembly: ServiceAssembly = ServiceAssemblyImpl(coreAssembly: self.coreAssembly)
+    
+    lazy var presentationAssembly: PresentationAssembly = PresentationAssemblyImpl(serviceAssembly: self.serviceAssembly)
 }

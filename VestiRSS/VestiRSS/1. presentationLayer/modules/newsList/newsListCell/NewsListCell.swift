@@ -8,8 +8,18 @@
 
 import UIKit
 
-final class NewsListCell: UITableViewCell, CongigurableView {
+// MARK: Metrics
+
+private enum Metrics {
+    static let horizontalPadding: CGFloat = 16
+    static let verticalPadding: CGFloat = 8
+    static let internalPadding: CGFloat = 4
+}
+
+final class NewsCell: UITableViewCell {
     
+    // MARK: UI
+   
     private let newsTitleLabel: UILabel = {
         let label = UILabel()
         label.accessibilityIdentifier = "newsTitleLabel"
@@ -31,6 +41,8 @@ final class NewsListCell: UITableViewCell, CongigurableView {
         return label
     }()
     
+    // MARK: Initialization
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     
@@ -42,6 +54,7 @@ final class NewsListCell: UITableViewCell, CongigurableView {
     }
     
     private func setupView() {
+        selectionStyle = .none
         contentView.addSubview(newsTitleLabel)
         contentView.addSubview(publicationTimeLabel)
         
@@ -51,23 +64,23 @@ final class NewsListCell: UITableViewCell, CongigurableView {
     private func setupLayout() {
         newsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            newsTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            newsTitleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            newsTitleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
+            newsTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Metrics.verticalPadding),
+            newsTitleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Metrics.horizontalPadding),
+            newsTitleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Metrics.horizontalPadding)
         ])
         
         publicationTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            publicationTimeLabel.topAnchor.constraint(equalTo: newsTitleLabel.bottomAnchor, constant: 4),
-            publicationTimeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            publicationTimeLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-            publicationTimeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            publicationTimeLabel.topAnchor.constraint(equalTo: newsTitleLabel.bottomAnchor, constant: Metrics.internalPadding),
+            publicationTimeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Metrics.horizontalPadding),
+            publicationTimeLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Metrics.horizontalPadding),
+            publicationTimeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Metrics.verticalPadding)
         ])
     }
     
-    func configure(with model: NewsCell) {
-        newsTitleLabel.text = model.title
-        publicationTimeLabel.text = model.publicationTime
+    func configure(with viewModel: NewsCellViewModel) {
+        newsTitleLabel.text = viewModel.title
+        publicationTimeLabel.text = viewModel.publicationTime
     }
 
 }

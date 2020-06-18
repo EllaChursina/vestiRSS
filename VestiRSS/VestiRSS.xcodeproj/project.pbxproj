@@ -7,13 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CD1741B0249500310077EB58 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741AF249500310077EB58 /* NewsCell.swift */; };
+		CD1741B0249500310077EB58 /* NewsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741AF249500310077EB58 /* NewsCellViewModel.swift */; };
 		CD1741B2249502B40077EB58 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741B1249502B40077EB58 /* NewsView.swift */; };
 		CD1741B42495093B0077EB58 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741B32495093B0077EB58 /* NewsViewModel.swift */; };
 		CD1741B724951D5F0077EB58 /* RSSNewsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741B624951D5F0077EB58 /* RSSNewsItem.swift */; };
 		CD1741B9249530520077EB58 /* CoreAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741B8249530520077EB58 /* CoreAssembly.swift */; };
 		CD1741BB249530900077EB58 /* RootAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741BA249530900077EB58 /* RootAssembly.swift */; };
 		CD1741BD24953D920077EB58 /* NewsListParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741BC24953D920077EB58 /* NewsListParser.swift */; };
+		CD1CB8F32499217D00501656 /* NewsFilterScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1CB8F22499217D00501656 /* NewsFilterScrollView.swift */; };
+		CD1CB8F72499398100501656 /* NewsCategoryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1CB8F62499398100501656 /* NewsCategoryItems.swift */; };
+		CD1D8183249A98E200B25567 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1D8182249A98E200B25567 /* FilterButton.swift */; };
+		CD4FD8FC2497B2B00008110C /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4FD8FB2497B2B00008110C /* ServiceAssembly.swift */; };
+		CD4FD8FE2497B4B50008110C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4FD8FD2497B4B50008110C /* NetworkManager.swift */; };
 		CD5EAABF24927C5400B0002B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAABE24927C5400B0002B /* AppDelegate.swift */; };
 		CD5EAAC124927C5400B0002B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAAC024927C5400B0002B /* SceneDelegate.swift */; };
 		CD5EAAC924927C5400B0002B /* VestiRSS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAAC724927C5400B0002B /* VestiRSS.xcdatamodeld */; };
@@ -24,18 +29,22 @@
 		CD5EAAE12492807300B0002B /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAAE02492807300B0002B /* NewsViewController.swift */; };
 		CD5EAAE5249284F700B0002B /* UITableViewCell+identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAAE4249284F700B0002B /* UITableViewCell+identifiable.swift */; };
 		CD5EAAE72492855100B0002B /* UITableView+dequeue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAAE62492855100B0002B /* UITableView+dequeue.swift */; };
-		CD5EAAEA2492868700B0002B /* ConfigurableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAAE92492868700B0002B /* ConfigurableView.swift */; };
 		CD5EAAED2492874E00B0002B /* NewsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAAEC2492874E00B0002B /* NewsListCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CD1741AF249500310077EB58 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		CD1741AF249500310077EB58 /* NewsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCellViewModel.swift; sourceTree = "<group>"; };
 		CD1741B1249502B40077EB58 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		CD1741B32495093B0077EB58 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
 		CD1741B624951D5F0077EB58 /* RSSNewsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNewsItem.swift; sourceTree = "<group>"; };
 		CD1741B8249530520077EB58 /* CoreAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAssembly.swift; sourceTree = "<group>"; };
 		CD1741BA249530900077EB58 /* RootAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootAssembly.swift; sourceTree = "<group>"; };
 		CD1741BC24953D920077EB58 /* NewsListParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListParser.swift; sourceTree = "<group>"; };
+		CD1CB8F22499217D00501656 /* NewsFilterScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFilterScrollView.swift; sourceTree = "<group>"; };
+		CD1CB8F62499398100501656 /* NewsCategoryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCategoryItems.swift; sourceTree = "<group>"; };
+		CD1D8182249A98E200B25567 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
+		CD4FD8FB2497B2B00008110C /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
+		CD4FD8FD2497B4B50008110C /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CD5EAABB24927C5400B0002B /* VestiRSS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VestiRSS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5EAABE24927C5400B0002B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD5EAAC024927C5400B0002B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -48,7 +57,6 @@
 		CD5EAAE02492807300B0002B /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		CD5EAAE4249284F700B0002B /* UITableViewCell+identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+identifiable.swift"; sourceTree = "<group>"; };
 		CD5EAAE62492855100B0002B /* UITableView+dequeue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+dequeue.swift"; sourceTree = "<group>"; };
-		CD5EAAE92492868700B0002B /* ConfigurableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableView.swift; sourceTree = "<group>"; };
 		CD5EAAEC2492874E00B0002B /* NewsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,6 +76,7 @@
 			children = (
 				CD1741B624951D5F0077EB58 /* RSSNewsItem.swift */,
 				CD1741BC24953D920077EB58 /* NewsListParser.swift */,
+				CD1CB8F62499398100501656 /* NewsCategoryItems.swift */,
 			);
 			path = networking;
 			sourceTree = "<group>";
@@ -91,9 +100,9 @@
 		CD5EAABD24927C5400B0002B /* VestiRSS */ = {
 			isa = PBXGroup;
 			children = (
+				CD5EAACF24927C5C00B0002B /* Info.plist */,
 				CD5EAAD524927E9C00B0002B /* 1. presentationLayer */,
 				CD5EAAD624927EB200B0002B /* 2. serviceLayer */,
-				CD5EAACF24927C5C00B0002B /* Info.plist */,
 				CD5EAAD724927ECD00B0002B /* 3. coreLayer */,
 				CD5EAAE22492846C00B0002B /* Supporting Files */,
 			);
@@ -112,6 +121,8 @@
 		CD5EAAD624927EB200B0002B /* 2. serviceLayer */ = {
 			isa = PBXGroup;
 			children = (
+				CD4FD8FB2497B2B00008110C /* ServiceAssembly.swift */,
+				CD4FD8FD2497B4B50008110C /* NetworkManager.swift */,
 			);
 			path = "2. serviceLayer";
 			sourceTree = "<group>";
@@ -121,7 +132,6 @@
 			children = (
 				CD1741B524951D100077EB58 /* networking */,
 				CD1741B8249530520077EB58 /* CoreAssembly.swift */,
-				CD1741BA249530900077EB58 /* RootAssembly.swift */,
 			);
 			path = "3. coreLayer";
 			sourceTree = "<group>";
@@ -131,7 +141,6 @@
 			children = (
 				CD5EAADC2492800000B0002B /* newsList */,
 				CD5EAADD2492801600B0002B /* news */,
-				CD5EAAE82492863400B0002B /* presentationProtocols */,
 			);
 			path = modules;
 			sourceTree = "<group>";
@@ -140,6 +149,8 @@
 			isa = PBXGroup;
 			children = (
 				CD5EAAEB249286F400B0002B /* newsListCell */,
+				CD1D8182249A98E200B25567 /* FilterButton.swift */,
+				CD1CB8F22499217D00501656 /* NewsFilterScrollView.swift */,
 				CD5EAADE2492806300B0002B /* NewsListViewController.swift */,
 			);
 			path = newsList;
@@ -160,6 +171,7 @@
 			children = (
 				CD5EAAE3249284C000B0002B /* extensions */,
 				CD5EAAC724927C5400B0002B /* VestiRSS.xcdatamodeld */,
+				CD1741BA249530900077EB58 /* RootAssembly.swift */,
 				CD5EAACC24927C5C00B0002B /* LaunchScreen.storyboard */,
 				CD5EAACA24927C5C00B0002B /* Assets.xcassets */,
 				CD5EAAC024927C5400B0002B /* SceneDelegate.swift */,
@@ -177,19 +189,11 @@
 			path = extensions;
 			sourceTree = "<group>";
 		};
-		CD5EAAE82492863400B0002B /* presentationProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				CD5EAAE92492868700B0002B /* ConfigurableView.swift */,
-			);
-			path = presentationProtocols;
-			sourceTree = "<group>";
-		};
 		CD5EAAEB249286F400B0002B /* newsListCell */ = {
 			isa = PBXGroup;
 			children = (
 				CD5EAAEC2492874E00B0002B /* NewsListCell.swift */,
-				CD1741AF249500310077EB58 /* NewsCell.swift */,
+				CD1741AF249500310077EB58 /* NewsCellViewModel.swift */,
 			);
 			path = newsListCell;
 			sourceTree = "<group>";
@@ -266,12 +270,15 @@
 			files = (
 				CD5EAAE5249284F700B0002B /* UITableViewCell+identifiable.swift in Sources */,
 				CD1741BB249530900077EB58 /* RootAssembly.swift in Sources */,
+				CD4FD8FE2497B4B50008110C /* NetworkManager.swift in Sources */,
 				CD5EAAC924927C5400B0002B /* VestiRSS.xcdatamodeld in Sources */,
+				CD4FD8FC2497B2B00008110C /* ServiceAssembly.swift in Sources */,
+				CD1CB8F32499217D00501656 /* NewsFilterScrollView.swift in Sources */,
 				CD5EAABF24927C5400B0002B /* AppDelegate.swift in Sources */,
 				CD1741B9249530520077EB58 /* CoreAssembly.swift in Sources */,
-				CD5EAAEA2492868700B0002B /* ConfigurableView.swift in Sources */,
 				CD5EAADF2492806300B0002B /* NewsListViewController.swift in Sources */,
 				CD5EAAE12492807300B0002B /* NewsViewController.swift in Sources */,
+				CD1CB8F72499398100501656 /* NewsCategoryItems.swift in Sources */,
 				CD5EAAED2492874E00B0002B /* NewsListCell.swift in Sources */,
 				CD5EAAD924927F0C00B0002B /* PresentationAssembly.swift in Sources */,
 				CD1741B724951D5F0077EB58 /* RSSNewsItem.swift in Sources */,
@@ -279,8 +286,9 @@
 				CD1741BD24953D920077EB58 /* NewsListParser.swift in Sources */,
 				CD1741B2249502B40077EB58 /* NewsView.swift in Sources */,
 				CD1741B42495093B0077EB58 /* NewsViewModel.swift in Sources */,
+				CD1D8183249A98E200B25567 /* FilterButton.swift in Sources */,
 				CD5EAAC124927C5400B0002B /* SceneDelegate.swift in Sources */,
-				CD1741B0249500310077EB58 /* NewsCell.swift in Sources */,
+				CD1741B0249500310077EB58 /* NewsCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,17 +8,37 @@
 
 import UIKit
 
-final class ImageManager {
+final class NetworkManager {
     
-    private func downloadImage(with urlString: String, completionHandler: @escaping (UIImage) -> Void) {
-        DispatchQueue.global().async {
+    private let newsListParser : NewsListParser
+    private let newsCategoryParser: NewsCategoryParser
+    
+    init(newsListParser: NewsListParser, newsCategoryParser: NewsCategoryParser) {
+        self.newsListParser = newsListParser
+        self.newsCategoryParser = newsCategoryParser
+    }
+    
+    private let baseLink = "https://www.vesti.ru/vesti.rss"
+    
+    func downloadData(completionHandler: @escaping ([RSSNewsItem]) -> Void) {
+        newsListParser.parseFeed(url: baseLink) { rssItems in
+            completionHandler(rssItems)
+        }
+    }
+    
+    func downloadCategories(completionHandler: @escaping ([String]) -> Void) {
+        newsCategoryParser.parseCategories(url: baseLink) { categories in
+            completionHandler(categories)
+        }
+    }
+    
+    func downloadImage(with urlString: String, completionHandler: @escaping (UIImage?) -> Void) {
             guard let url = URL(string: urlString),
                 let data = try? Data(contentsOf: url),
                 let image = UIImage(data: data) else {
-                    return
+                    return completionHandler(nil)
             }
-            completionHandler(image)
-        }
+        completionHandler(image)
     }
     
 }

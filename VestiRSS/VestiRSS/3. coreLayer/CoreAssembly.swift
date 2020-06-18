@@ -8,5 +8,14 @@
 
 import Foundation
 
-protocol ICoreAssembly {
+protocol CoreAssembly {
+    var newsListParser: NewsListParser { get }
+    var newsCategoryParser: NewsCategoryParser { get }
 }
+
+final class CoreAssemblyImpl: CoreAssembly {
+    lazy var newsListParser = NewsListParser()
+    lazy var newsCategoryParser = NewsCategoryParser()
+}
+
+
