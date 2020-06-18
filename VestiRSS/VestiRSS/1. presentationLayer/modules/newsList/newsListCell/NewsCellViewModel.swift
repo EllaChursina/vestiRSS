@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct NewsCell {
+struct NewsCellViewModel {
     let title: String
     let publicationTime: String
 }
