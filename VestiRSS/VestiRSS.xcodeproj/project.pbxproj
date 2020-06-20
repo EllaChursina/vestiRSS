@@ -15,8 +15,9 @@
 		CD1741BB249530900077EB58 /* RootAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741BA249530900077EB58 /* RootAssembly.swift */; };
 		CD1741BD24953D920077EB58 /* NewsListParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1741BC24953D920077EB58 /* NewsListParser.swift */; };
 		CD1CB8F32499217D00501656 /* NewsFilterScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1CB8F22499217D00501656 /* NewsFilterScrollView.swift */; };
-		CD1CB8F72499398100501656 /* NewsCategoryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1CB8F62499398100501656 /* NewsCategoryItems.swift */; };
+		CD1CB8F72499398100501656 /* NewsCategoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1CB8F62499398100501656 /* NewsCategoryParser.swift */; };
 		CD1D8183249A98E200B25567 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1D8182249A98E200B25567 /* FilterButton.swift */; };
+		CD27987E249E6C4D0010000F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27987D249E6C4C0010000F /* Constants.swift */; };
 		CD4FD8FC2497B2B00008110C /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4FD8FB2497B2B00008110C /* ServiceAssembly.swift */; };
 		CD4FD8FE2497B4B50008110C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4FD8FD2497B4B50008110C /* NetworkManager.swift */; };
 		CD5EAABF24927C5400B0002B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAABE24927C5400B0002B /* AppDelegate.swift */; };
@@ -41,8 +42,9 @@
 		CD1741BA249530900077EB58 /* RootAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootAssembly.swift; sourceTree = "<group>"; };
 		CD1741BC24953D920077EB58 /* NewsListParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListParser.swift; sourceTree = "<group>"; };
 		CD1CB8F22499217D00501656 /* NewsFilterScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFilterScrollView.swift; sourceTree = "<group>"; };
-		CD1CB8F62499398100501656 /* NewsCategoryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCategoryItems.swift; sourceTree = "<group>"; };
+		CD1CB8F62499398100501656 /* NewsCategoryParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCategoryParser.swift; sourceTree = "<group>"; };
 		CD1D8182249A98E200B25567 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
+		CD27987D249E6C4C0010000F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CD4FD8FB2497B2B00008110C /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
 		CD4FD8FD2497B4B50008110C /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CD5EAABB24927C5400B0002B /* VestiRSS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VestiRSS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,9 +78,18 @@
 			children = (
 				CD1741B624951D5F0077EB58 /* RSSNewsItem.swift */,
 				CD1741BC24953D920077EB58 /* NewsListParser.swift */,
-				CD1CB8F62499398100501656 /* NewsCategoryItems.swift */,
+				CD1CB8F62499398100501656 /* NewsCategoryParser.swift */,
 			);
 			path = networking;
+			sourceTree = "<group>";
+		};
+		CD27987C249CB9260010000F /* newsFilterScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				CD1CB8F22499217D00501656 /* NewsFilterScrollView.swift */,
+				CD1D8182249A98E200B25567 /* FilterButton.swift */,
+			);
+			path = newsFilterScrollView;
 			sourceTree = "<group>";
 		};
 		CD5EAAB224927C5400B0002B = {
@@ -149,8 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				CD5EAAEB249286F400B0002B /* newsListCell */,
-				CD1D8182249A98E200B25567 /* FilterButton.swift */,
-				CD1CB8F22499217D00501656 /* NewsFilterScrollView.swift */,
+				CD27987C249CB9260010000F /* newsFilterScrollView */,
 				CD5EAADE2492806300B0002B /* NewsListViewController.swift */,
 			);
 			path = newsList;
@@ -169,6 +179,7 @@
 		CD5EAAE22492846C00B0002B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CD27987D249E6C4C0010000F /* Constants.swift */,
 				CD5EAAE3249284C000B0002B /* extensions */,
 				CD5EAAC724927C5400B0002B /* VestiRSS.xcdatamodeld */,
 				CD1741BA249530900077EB58 /* RootAssembly.swift */,
@@ -269,6 +280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD5EAAE5249284F700B0002B /* UITableViewCell+identifiable.swift in Sources */,
+				CD27987E249E6C4D0010000F /* Constants.swift in Sources */,
 				CD1741BB249530900077EB58 /* RootAssembly.swift in Sources */,
 				CD4FD8FE2497B4B50008110C /* NetworkManager.swift in Sources */,
 				CD5EAAC924927C5400B0002B /* VestiRSS.xcdatamodeld in Sources */,
@@ -278,7 +290,7 @@
 				CD1741B9249530520077EB58 /* CoreAssembly.swift in Sources */,
 				CD5EAADF2492806300B0002B /* NewsListViewController.swift in Sources */,
 				CD5EAAE12492807300B0002B /* NewsViewController.swift in Sources */,
-				CD1CB8F72499398100501656 /* NewsCategoryItems.swift in Sources */,
+				CD1CB8F72499398100501656 /* NewsCategoryParser.swift in Sources */,
 				CD5EAAED2492874E00B0002B /* NewsListCell.swift in Sources */,
 				CD5EAAD924927F0C00B0002B /* PresentationAssembly.swift in Sources */,
 				CD1741B724951D5F0077EB58 /* RSSNewsItem.swift in Sources */,

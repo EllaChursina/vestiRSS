@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol NewsFilterScrollViewDelegate {
+    func filterNews(by category: String)
+}
+
 final class NewsFilterScrollView: UIScrollView {
     
     // MARK: Data
@@ -21,6 +25,9 @@ final class NewsFilterScrollView: UIScrollView {
     }
     
     var currentButton: FilterButton!
+    
+    var filterDelegate: NewsFilterScrollViewDelegate!
+    
     // MARK: Contsraints
     
     var leadingContraint: NSLayoutXAxisAnchor!
@@ -79,15 +86,19 @@ final class NewsFilterScrollView: UIScrollView {
         button.addTarget(self, action: #selector(scrollViewButtonAction), for: .touchUpInside)
     }
     
-    @objc private func scrollViewButtonAction(_ sender: Any?){
+    @objc private func scrollViewButtonAction(_ sender: Any?) {
         if let senderButton = sender as? FilterButton {
-            currentButton.isHighlighted = false
-            currentButton = senderButton
-            currentButton.isHighlighted = true
+            print("\(senderButton.titleLabel?.text)")
+            DispatchQueue.main.async {
+                self.currentButton.isHighlighted = false
+                self.currentButton = senderButton
+                self.currentButton.isHighlighted = true
+                self.layoutSubviews()
+                guard let currentCategory = senderButton.titleLabel?.text else { return }
+                
+                self.filterDelegate.filterNews(by: currentCategory)
+            }
         }
     }
-    
-    func configure(with data: [String]) {
-        categories = data
-    }
+
 }

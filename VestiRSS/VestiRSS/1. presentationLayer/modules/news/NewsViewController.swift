@@ -10,7 +10,15 @@ import UIKit
 
 final class NewsViewController: UIViewController {
     
-     // MARK: UI
+    // MARK: DI
+    
+    private let networkManager: NetworkManager
+    
+    // MARK: Data
+    
+    private let rssItem: RSSNewsItem
+    
+    // MARK: UI
     
     private let contentScrollView: UIScrollView = {
         let contentScrollView = UIScrollView()
@@ -30,8 +38,12 @@ final class NewsViewController: UIViewController {
     
     // MARK: Initialization
     
-    init() {
+    init(networkManager: NetworkManager, rssItem: RSSNewsItem) {
+        self.networkManager = networkManager
+        self.rssItem = rssItem
+        
         super.init(nibName: nil, bundle: nil)
+        
         setupView()
     }
     
@@ -43,7 +55,8 @@ final class NewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+//        setupView()
     }
     
     private func setupView() {
@@ -73,9 +86,22 @@ final class NewsViewController: UIViewController {
             newsView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
             newsView.widthAnchor.constraint(equalToConstant: view.frame.width)
         ])
+        configureNewsView(with: rssItem)
     }
     
-    func configure(with model: NewsViewModel) {
-        newsView.configure(with: model)
+    private func fetchImage() {
+        networkManager.downloadImage(with: rssItem.imageURL) { [weak self] (image) in
+            DispatchQueue.global().async {
+                self?.newsView.configureImage(with: image)
+            }
+        }
+    }
+    
+    func configureNewsView(with rssItem: RSSNewsItem) {
+        
+        let model = NewsViewModel(title: rssItem.title, publicationTime: rssItem.pubDate, description: rssItem.description)
+        newsView.configureData(with: model)
+        
+        fetchImage()
     }
 }

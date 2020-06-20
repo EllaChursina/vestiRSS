@@ -9,8 +9,8 @@
 import UIKit
 
 struct NewsViewModel {
-    let image: UIImage?
     let title: String
     let publicationTime: String
     let description: String
 }
+

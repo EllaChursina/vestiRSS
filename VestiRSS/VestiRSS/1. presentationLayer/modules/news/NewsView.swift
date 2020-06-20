@@ -61,11 +61,6 @@ final class NewsView: UIView {
     
     // MARK: Constraints
     
-    private var aspectRatioConstraint: NSLayoutConstraint!
-    private var topNewsImageConstraint: NSLayoutConstraint!
-    private var leftNewsImageConstraint: NSLayoutConstraint!
-    private var rightNewsImageConstraint: NSLayoutConstraint!
-    
     private var topTitleLabelConstraint: NSLayoutConstraint!
     
     // MARK: Initialization
@@ -92,8 +87,10 @@ final class NewsView: UIView {
     private func setupLayout() {
         
         newsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        topTitleLabelConstraint = newsTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.padding)
+        
         NSLayoutConstraint.activate([
-            newsTitleLabel.topAnchor.constraint(equalTo: newsImageView.bottomAnchor, constant: Metrics.bottomPadding),
+            topTitleLabelConstraint,
             newsTitleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: Metrics.padding),
             newsTitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -Metrics.padding)
         ])
@@ -115,38 +112,41 @@ final class NewsView: UIView {
         ])
     }
     
-    func configure(with model: NewsViewModel) {
-        if let image = model.image {
-            newsImageView.image = model.image
-            DispatchQueue.main.async {
-                self.updateConstraints(for: image)
-            }
-        }
+    func configureData(with model: NewsViewModel) {
+
         newsTitleLabel.text = model.title
         publicationTimeLabel.text = model.publicationTime
         descriptionLabel.text = model.description
+        
     }
     
-    private func updateConstraints(for image: UIImage) {
+    func configureImage(with image: UIImage?) {
+        DispatchQueue.main.async {
+            self.newsImageView.image = image
+            self.updateConstraints(for: image)
+        }
+    }
+    
+    private func updateConstraints(for image: UIImage?) {
+        
+        guard let image = image else { return }
         
         newsImageView.translatesAutoresizingMaskIntoConstraints = false
 
         let aspectRatio = image.size.width / image.size.height
-        
-        aspectRatioConstraint = newsImageView.widthAnchor.constraint(equalTo: newsImageView.heightAnchor,
-                                                                     multiplier: aspectRatio)
 
-        topNewsImageConstraint = newsImageView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.padding)
-        leftNewsImageConstraint = newsImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: Metrics.padding)
-        rightNewsImageConstraint = newsImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -Metrics.padding)
+        let aspectRatioConstraint = newsImageView.widthAnchor.constraint(equalTo: newsImageView.heightAnchor,
+                                                                     multiplier: aspectRatio)
         
-        topTitleLabelConstraint = newsTitleLabel.bottomAnchor.constraint(equalTo: newsImageView.bottomAnchor,
+        topTitleLabelConstraint.isActive = false
+        
+        topTitleLabelConstraint = newsTitleLabel.topAnchor.constraint(equalTo: newsImageView.bottomAnchor,
         constant: Metrics.bottomPadding)
 
         NSLayoutConstraint.activate([
-            topNewsImageConstraint,
-            leftNewsImageConstraint,
-            rightNewsImageConstraint,
+            newsImageView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.padding),
+            newsImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: Metrics.padding),
+            newsImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -Metrics.padding),
             topTitleLabelConstraint,
             aspectRatioConstraint
         ])

@@ -79,67 +79,73 @@ final class NewsListParser: NSObject {
 // MARK: XML Parser Delegate
 
 extension NewsListParser: XMLParserDelegate {
-        
-        func parser(_ parser: XMLParser,
-                    didStartElement elementName: String,
-                    namespaceURI: String?,
-                    qualifiedName qName: String?,
-                    attributes attributeDict: [String: String] = [:]) {
-            switch elementName {
-            case "item":
-                currentTitle = ""
-                currentDescription = ""
-                currentPubDate = ""
-                currentImageURL = ""
-            case "enclosure":
-                if let urlString = attributeDict["url"] {
-                    currentImageURL += urlString
-                }
-            default:
-                break
+    
+    func parserDidStartDocument(_ parser: XMLParser) {
+        rssItems = []
+    }
+    
+    
+    func parser(_ parser: XMLParser,
+                didStartElement elementName: String,
+                namespaceURI: String?,
+                qualifiedName qName: String?,
+                attributes attributeDict: [String: String] = [:]) {
+        switch elementName {
+        case "item":
+            currentTitle = ""
+            currentDescription = ""
+            currentPubDate = ""
+            currentImageURL = ""
+            currentCategory = ""
+        case "enclosure":
+            if let urlString = attributeDict["url"] {
+                currentImageURL += urlString
             }
-            
-            currentElement = elementName
+        default:
+            break
         }
         
-        func parser(_ parser: XMLParser, foundCharacters string: String) {
-            guard let element = XMLElement(rawValue: currentElement) else {
-                return
-            }
-            
-            switch element {
-            case .title:
-                currentTitle += string
-            case .pubDate:
-                currentPubDate += string
-            case .fullText:
-                currentDescription += string
-            case .category:
-                currentCategory += string
-            }
+        currentElement = elementName
+    }
+    
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        guard let element = XMLElement(rawValue: currentElement) else {
+            return
         }
         
-        func parser(_ parser: XMLParser,
-                    didEndElement elementName: String,
-                    namespaceURI: String?,
-                    qualifiedName qName: String?) {
-            guard elementName == "item" else {
-                return
-            }
-            
-            let rssItem = RSSNewsItem(imageURL: currentImageURL,
-                                      title: currentTitle,
-                                      pubDate: currentPubDate,
-                                      description: currentDescription,
-                                      category: currentCategory)
-             rssItems.append(rssItem)
+        switch element {
+        case .title:
+            currentTitle += string
+        case .pubDate:
+            currentPubDate += string
+        case .fullText:
+            currentDescription += string
+        case .category:
+            currentCategory += string
+        }
+    }
+    
+    func parser(_ parser: XMLParser,
+                didEndElement elementName: String,
+                namespaceURI: String?,
+                qualifiedName qName: String?) {
+        guard elementName == "item" else {
+            return
         }
         
-        func parserDidEndDocument(_ parser: XMLParser) {
-            parserCompletionHandler?(rssItems)
-        }
-        
-        func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-            print(parseError.localizedDescription)
-        }
+        let rssItem = RSSNewsItem(imageURL: currentImageURL,
+                                  title: currentTitle,
+                                  pubDate: currentPubDate,
+                                  description: currentDescription,
+                                  category: currentCategory)
+        rssItems.append(rssItem)
+    }
+    
+    func parserDidEndDocument(_ parser: XMLParser) {
+        parserCompletionHandler?(rssItems)
+    }
+    
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+        print(parseError.localizedDescription)
+    }
 }

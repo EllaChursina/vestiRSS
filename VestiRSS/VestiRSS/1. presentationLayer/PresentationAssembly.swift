@@ -12,7 +12,7 @@ protocol PresentationAssembly {
     
     func newsListViewController() -> NewsListViewController
     
-    func newsViewController() -> NewsViewController
+    func newsViewController(with rssItem: RSSNewsItem) -> NewsViewController
 }
 
 final class PresentationAssemblyImpl: PresentationAssembly {
@@ -28,8 +28,9 @@ final class PresentationAssemblyImpl: PresentationAssembly {
         return vc
     }
     
-    func newsViewController() -> NewsViewController {
-        let vc = NewsViewController()
+    func newsViewController(with rssItem: RSSNewsItem) -> NewsViewController {
+        let vc = NewsViewController(networkManager: serviceAssembly.networkManager, rssItem: rssItem)
+        
         return vc
     }
 }

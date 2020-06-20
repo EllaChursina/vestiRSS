@@ -18,11 +18,17 @@ final class NetworkManager {
         self.newsCategoryParser = newsCategoryParser
     }
     
-    private let baseLink = "https://www.vesti.ru/vesti.rss"
+    private let baseLink = Constants.baseLink 
     
-    func downloadData(completionHandler: @escaping ([RSSNewsItem]) -> Void) {
+    func downloadData(by category: String, completionHandler: @escaping ([RSSNewsItem]) -> Void) {
         newsListParser.parseFeed(url: baseLink) { rssItems in
-            completionHandler(rssItems)
+            var filteredCategory = [RSSNewsItem]()
+            if category == Constants.topNewsCategoryName {
+                completionHandler(rssItems)
+            } else {
+                filteredCategory = rssItems.filter ({ return $0.category == category })
+                completionHandler(filteredCategory)
+            }
         }
     }
     

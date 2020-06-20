@@ -18,6 +18,14 @@ private enum Metrics {
 
 final class NewsCell: UITableViewCell {
     
+    // MARK: Date Formatters
+    
+    private static let dateFormatter : DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }()
+    
     // MARK: UI
    
     private let newsTitleLabel: UILabel = {

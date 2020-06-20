@@ -8,6 +8,10 @@
 
 import UIKit
 
+private enum Metrics {
+    static let estimateHeight: CGFloat = 46
+}
+
 final class NewsListViewController: UIViewController {
 
     // MARK: DI
@@ -21,6 +25,8 @@ final class NewsListViewController: UIViewController {
         let newsFilterScrollView = NewsFilterScrollView(frame: CGRect.zero)
         newsFilterScrollView.accessibilityIdentifier = "newsFilterScrollView"
         newsFilterScrollView.backgroundColor = .white
+        newsFilterScrollView.filterDelegate = self
+        
         return newsFilterScrollView
     }()
     
@@ -36,7 +42,7 @@ final class NewsListViewController: UIViewController {
     // MARK: Data
     
     private var rssItems = [RSSNewsItem]()
-    private var categories = [String]()
+    private var currentCategory = Constants.topNewsCategoryName
     
     // MARK: Initialization
     
@@ -46,7 +52,6 @@ final class NewsListViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         fetchCategories()
-        newsFilterScrollView.configure(with: categories)
         setupView()
         
     }
@@ -60,8 +65,9 @@ final class NewsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        prepareTableView()
         fetchData()
+        prepareTableView()
+        
     }
     
     private func setupView() {
@@ -94,44 +100,41 @@ final class NewsListViewController: UIViewController {
     private func prepareTableView() {
         view.addSubview(newsListTableView)
         
-        
-        
         newsListTableView.dataSource = self
         newsListTableView.delegate = self
         
         newsListTableView.refreshControl = refreshControl
         
+        newsListTableView.estimatedRowHeight = Metrics.estimateHeight
+        
         newsListTableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
     }
     
     private func fetchData() {
-        networkManager.downloadData { [weak self] rssItems in
-            DispatchQueue.main.async {
+        networkManager.downloadData(by: currentCategory) { [weak self] rssItems in
+            DispatchQueue.global().async {
                 self?.rssItems = rssItems
-                self?.newsListTableView.reloadData()
+                DispatchQueue.main.async {
+                    self?.newsListTableView.reloadData()
+                }
             }
         }
-        
-        
     }
     
     private func fetchCategories() {
         networkManager.downloadCategories { [weak self] categories in
             DispatchQueue.main.async {
-                print(categories)
                 self?.newsFilterScrollView.categories = categories
-
             }
         }
     }
     
     @objc private func refresh(sender: UIRefreshControl) {
-        rssItems = [RSSNewsItem]()
         fetchData()
-        newsListTableView.reloadData()
         sender.endRefreshing()
     }
 }
+
 
 // MARK: UITableViewDataSource
 
@@ -157,19 +160,21 @@ extension NewsListViewController: UITableViewDataSource {
 extension NewsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = presentationAssembly.newsViewController()
         let rssItem = rssItems[indexPath.row]
-        var newsImage: UIImage?
-        networkManager.downloadImage(with: rssItem.imageURL) { image in
-            newsImage = image
-        }
-        let newsItem = NewsViewModel(image: newsImage,
-                                     title: rssItem.title,
-                                     publicationTime: rssItem.pubDate,
-                                     description: rssItem.description)
-        vc.configure(with: newsItem)
+        let vc = presentationAssembly.newsViewController(with: rssItem)
         
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+}
+
+// MARK: NewsFilterScrollViewDelegate
+
+extension NewsListViewController: NewsFilterScrollViewDelegate {
+    
+    func filterNews(by category: String) {
+        currentCategory = category
+        fetchData()
     }
 }
 
