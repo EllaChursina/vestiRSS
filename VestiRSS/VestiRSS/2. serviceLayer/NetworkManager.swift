@@ -18,9 +18,9 @@ final class NetworkManager {
     
     private let baseLink = Constants.baseLink 
     
-    func downloadData(by category: String, completionHandler: @escaping ([RSSNewsItem]) -> Void) {
+    func downloadData(by category: String, completionHandler: @escaping ([NewsItem]) -> Void) {
         newsListParser.parseFeed(url: baseLink) { rssItems in
-            var filteredCategory = [RSSNewsItem]()
+            var filteredCategory = [NewsItem]()
             if category == Constants.topNewsCategoryName {
                 completionHandler(rssItems)
             } else {

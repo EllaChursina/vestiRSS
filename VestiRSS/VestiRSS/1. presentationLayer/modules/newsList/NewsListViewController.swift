@@ -13,7 +13,7 @@ private enum Metrics {
 }
 
 final class NewsListViewController: UIViewController {
-
+    
     // MARK: DI
     
     private let presentationAssembly: PresentationAssembly
@@ -43,7 +43,7 @@ final class NewsListViewController: UIViewController {
     
     // MARK: Data
     
-    private var rssItems = [RSSNewsItem]()
+    private var rssItems = [NewsItem]()
     private var currentCategory = Constants.topNewsCategoryName
     
     // MARK: Initialization

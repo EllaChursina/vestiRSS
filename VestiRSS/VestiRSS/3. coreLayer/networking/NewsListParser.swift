@@ -17,7 +17,7 @@ private enum XMLElement: String {
 
 final class NewsListParser: NSObject {
     
-    private var rssItems: [RSSNewsItem] = []
+    private var rssItems: [NewsItem] = []
     
     private var currentElement = ""
     
@@ -50,9 +50,9 @@ final class NewsListParser: NSObject {
         }
     }
     
-    private var parserCompletionHandler: (([RSSNewsItem]) -> Void)?
+    private var parserCompletionHandler: (([NewsItem]) -> Void)?
     
-    func parseFeed(url: String, completionHandler: (([RSSNewsItem]) -> Void)?) {
+    func parseFeed(url: String, completionHandler: (([NewsItem]) -> Void)?) {
         parserCompletionHandler = completionHandler
         
         let request = URLRequest(url: URL(string: url)!)
@@ -133,7 +133,7 @@ extension NewsListParser: XMLParserDelegate {
             return
         }
         
-        let rssItem = RSSNewsItem(imageURL: currentImageURL,
+        let rssItem = NewsItem(imageURL: currentImageURL,
                                   title: currentTitle,
                                   pubDate: currentPubDate,
                                   description: currentDescription,

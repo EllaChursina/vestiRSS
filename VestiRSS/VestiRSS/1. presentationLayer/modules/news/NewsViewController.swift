@@ -16,7 +16,7 @@ final class NewsViewController: UIViewController {
     
     // MARK: Data
     
-    private let rssItem: RSSNewsItem
+    private let rssItem: NewsItem
     
     // MARK: UI
     
@@ -38,7 +38,7 @@ final class NewsViewController: UIViewController {
     
     // MARK: Initialization
     
-    init(networkManager: NetworkManager, rssItem: RSSNewsItem) {
+    init(networkManager: NetworkManager, rssItem: NewsItem) {
         self.networkManager = networkManager
         self.rssItem = rssItem
         
@@ -97,7 +97,7 @@ final class NewsViewController: UIViewController {
         }
     }
     
-    func configureNewsView(with rssItem: RSSNewsItem) {
+    func configureNewsView(with rssItem: NewsItem) {
         
         let model = NewsViewModel(title: rssItem.title, publicationTime: rssItem.pubDate, description: rssItem.description)
         newsView.configureData(with: model)

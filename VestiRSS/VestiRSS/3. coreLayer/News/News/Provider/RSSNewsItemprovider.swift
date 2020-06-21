@@ -10,8 +10,8 @@ import Foundation
 
 class RSSNewItemProvider{}
 
-extension RSSNewItemProvider: NewsItemProvider {
-    func getAll() -> [NewsItem] {
-    <#code#>
-    }
-}
+//extension RSSNewItemProvider: NewsItemProvider {
+//    func getAll() -> [NewsItem] {
+//    <#code#>
+//    }
+//}

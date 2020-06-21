@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct RSSNewsItem {
+struct NewsItem {
     var imageURL: String
     var title: String
     var pubDate: String

@@ -10,11 +10,11 @@ import Foundation
 
 final class NewsListViewControllerDataProvider {
     private var newsCategoryProvider: NewsCategoryProvider
-    private var newsItemProvider: NewsItemProvider
+//    private var newsItemProvider: NewsItemProvider
     
     init(
-        newsCategoryProvider: NewsCategoryProvider,
-        newsItemProvider: NewsItemProvider
+        newsCategoryProvider: NewsCategoryProvider
+//        newsItemProvider: NewsItemProvider
     ) {
         self.newsCategoryProvider = newsCategoryProvider
     }
@@ -23,7 +23,7 @@ final class NewsListViewControllerDataProvider {
         return self.newsCategoryProvider.getAll()
     }
     
-    func getNewsList() -> [NewsItem] {
-        return self.newsItemProvider.getAll()()
-    }
+//    func getNewsList() -> [NewsItem] {
+//        return self.newsItemProvider.getAll()()
+//    }
 }
