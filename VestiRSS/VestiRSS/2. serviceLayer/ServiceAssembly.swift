@@ -10,15 +10,17 @@ import Foundation
 
 protocol ServiceAssembly {
     var networkManager: NetworkManager { get }
+    var newsListViewControllerDataProvider: NewsListViewControllerDataProvider { get }
 }
 
 final class ServiceAssemblyImpl: ServiceAssembly {
     
+    lazy var networkManager = NetworkManager(newsListParser: coreAssembly.newsListParser)
+    var newsListViewControllerDataProvider: NewsListViewControllerDataProvider
     private let coreAssembly: CoreAssembly
     
     init(coreAssembly: CoreAssembly) {
         self.coreAssembly = coreAssembly
+        self.newsListViewControllerDataProvider = NewsListViewControllerDataProvider(newsCategoryProvider: coreAssembly.rssNewsCategoryProvider)
     }
-    
-    lazy var networkManager = NetworkManager(newsListParser: coreAssembly.newsListParser, newsCategoryParser: coreAssembly.newsCategoryParser)
 }

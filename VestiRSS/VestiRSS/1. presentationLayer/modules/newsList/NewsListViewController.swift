@@ -18,6 +18,8 @@ final class NewsListViewController: UIViewController {
     
     private let presentationAssembly: PresentationAssembly
     private let networkManager: NetworkManager
+    private let newsListViewControllerDataProvider: NewsListViewControllerDataProvider
+
     
     // MARK: UI
     
@@ -46,9 +48,14 @@ final class NewsListViewController: UIViewController {
     
     // MARK: Initialization
     
-    init(presentationAssembly: PresentationAssembly, networkManager: NetworkManager) {
+    init(
+        presentationAssembly: PresentationAssembly,
+        networkManager: NetworkManager,
+        newsListViewControllerDataProvider: NewsListViewControllerDataProvider
+    ) {
         self.presentationAssembly = presentationAssembly
         self.networkManager = networkManager
+        self.newsListViewControllerDataProvider = newsListViewControllerDataProvider
         
         super.init(nibName: nil, bundle: nil)
         fetchCategories()
@@ -122,10 +129,8 @@ final class NewsListViewController: UIViewController {
     }
     
     private func fetchCategories() {
-        networkManager.downloadCategories { [weak self] categories in
-            DispatchQueue.main.async {
-                self?.newsFilterScrollView.categories = categories
-            }
+        DispatchQueue.main.async {
+            self.newsFilterScrollView.categories = self.newsListViewControllerDataProvider.getNewsCategoryList()
         }
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class NewsCategoryParser: NSObject {
+final class RSSNewsCategoryProvider: NSObject {
     
     private var rssCategoryItems: [String] = [Constants.topNewsCategoryName]
     
@@ -19,36 +19,11 @@ final class NewsCategoryParser: NSObject {
             currentCategory = currentCategory.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
     }
-    
-    private var parserCompletionHandler: (([String]) -> Void)?
-    
-    func parseCategories(url: String, completionHandler: (([String]) -> Void)?) {
-        parserCompletionHandler = completionHandler
-        
-        let request = URLRequest(url: URL(string: url)!)
-        let urlSession = URLSession.shared
-        
-        let task = urlSession.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                
-                return
-            }
-            
-            let parser = XMLParser(data: data)
-            parser.delegate = self
-            parser.parse()
-        }
-        
-        task.resume()
-    }
 }
 
 // MARK: XML Parser Delegate
 
-extension NewsCategoryParser: XMLParserDelegate {
+extension RSSNewsCategoryProvider: XMLParserDelegate {
     
     func parser(_ parser: XMLParser,
                 didStartElement elementName: String,
@@ -87,11 +62,35 @@ extension NewsCategoryParser: XMLParserDelegate {
         }
     }
     
-    func parserDidEndDocument(_ parser: XMLParser) {
-        parserCompletionHandler?(rssCategoryItems)
-    }
+    func parserDidEndDocument(_ parser: XMLParser) {}
     
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         print(parseError.localizedDescription)
+    }
+}
+
+extension RSSNewsCategoryProvider: NewsCategoryProvider {
+    func getAll() -> [String] {
+        let request = URLRequest(url: URL(string: Constants.baseLink)!)
+        let urlSession = URLSession.shared
+        let semaphore = DispatchSemaphore(value: 0)
+        let task = urlSession.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                    
+                return
+            }
+                
+            let parser = XMLParser(data: data)
+            parser.delegate = self
+            parser.parse()
+            semaphore.signal()
+        }.resume()
+
+        _ = semaphore.wait(wallTimeout: .distantFuture)
+
+        return rssCategoryItems
     }
 }

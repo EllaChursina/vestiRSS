@@ -11,7 +11,6 @@ import UIKit
 protocol PresentationAssembly {
     
     func newsListViewController() -> NewsListViewController
-    
     func newsViewController(with rssItem: RSSNewsItem) -> NewsViewController
 }
 
@@ -24,7 +23,11 @@ final class PresentationAssemblyImpl: PresentationAssembly {
     }
     
     func newsListViewController() -> NewsListViewController {
-        let vc = NewsListViewController(presentationAssembly: self, networkManager: serviceAssembly.networkManager)
+        let vc = NewsListViewController(
+            presentationAssembly: self,
+            networkManager: serviceAssembly.networkManager,
+            newsListViewControllerDataProvider: serviceAssembly.newsListViewControllerDataProvider
+        )
         return vc
     }
     

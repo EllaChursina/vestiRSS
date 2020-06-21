@@ -11,11 +11,9 @@ import UIKit
 final class NetworkManager {
     
     private let newsListParser : NewsListParser
-    private let newsCategoryParser: NewsCategoryParser
     
-    init(newsListParser: NewsListParser, newsCategoryParser: NewsCategoryParser) {
+    init(newsListParser: NewsListParser) {
         self.newsListParser = newsListParser
-        self.newsCategoryParser = newsCategoryParser
     }
     
     private let baseLink = Constants.baseLink 
@@ -31,13 +29,7 @@ final class NetworkManager {
             }
         }
     }
-    
-    func downloadCategories(completionHandler: @escaping ([String]) -> Void) {
-        newsCategoryParser.parseCategories(url: baseLink) { categories in
-            completionHandler(categories)
-        }
-    }
-    
+
     func downloadImage(with urlString: String, completionHandler: @escaping (UIImage?) -> Void) {
             guard let url = URL(string: urlString),
                 let data = try? Data(contentsOf: url),
