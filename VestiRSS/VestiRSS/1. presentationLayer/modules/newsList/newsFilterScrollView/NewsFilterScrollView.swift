@@ -8,30 +8,28 @@
 
 import UIKit
 
-protocol NewsFilterScrollViewDelegate {
-    func filterNews(by category: String)
+protocol NewsFilterScrollViewDelegate: AnyObject {
+    func fitlerButtonTapped(with text: String)
 }
 
 final class NewsFilterScrollView: UIScrollView {
+    
+    weak var filterDelegate: NewsFilterScrollViewDelegate?
     
     // MARK: Data
     
     var categories = [String]() {
         didSet {
-            DispatchQueue.main.async {
-                self.setupView()
-            }
+            self.setupView()
         }
     }
     
-    var currentButton: FilterButton!
-    
-    var filterDelegate: NewsFilterScrollViewDelegate!
+    private var currentButton: FilterButton?
     
     // MARK: Contsraints
     
-    var leadingContraint: NSLayoutXAxisAnchor!
-    var trailingButtonContraint: NSLayoutConstraint!
+    private var leadingContraint: NSLayoutXAxisAnchor!
+    private var trailingButtonContraint: NSLayoutConstraint!
     
     // MARK: Initialization
     
@@ -54,22 +52,28 @@ final class NewsFilterScrollView: UIScrollView {
     }
     
     private func setupView() {
+        subviews.forEach { $0.removeFromSuperview() }
+        currentButton = nil
         
         leadingContraint = self.leadingAnchor
         guard !categories.isEmpty else { return }
+        
         for category in categories {
-            let filterButton = FilterButton.init(frame: CGRect.zero)
+            let filterButton = FilterButton()
+            
+            if currentButton == nil {
+                currentButton = filterButton
+                currentButton?.isSelected = true
+            }
+            
             filterButton.translatesAutoresizingMaskIntoConstraints = false
             filterButton.sizeThatFits(CGSize.zero)
+            
             addSubview(filterButton)
-            if category == "Главные" {
-                currentButton = filterButton
-            }
             setupLayout(for: filterButton, title: category)
         }
-        trailingButtonContraint.isActive = true
-        currentButton.isHighlighted = true
         
+        trailingButtonContraint.isActive = true
     }
     
     private func setupLayout(for button: FilterButton, title: String) {
@@ -87,18 +91,16 @@ final class NewsFilterScrollView: UIScrollView {
     }
     
     @objc private func scrollViewButtonAction(_ sender: Any?) {
-        if let senderButton = sender as? FilterButton {
-            print("\(senderButton.titleLabel?.text)")
-            DispatchQueue.main.async {
-                self.currentButton.isHighlighted = false
-                self.currentButton = senderButton
-                self.currentButton.isHighlighted = true
-                self.layoutSubviews()
-                guard let currentCategory = senderButton.titleLabel?.text else { return }
-                
-                self.filterDelegate.filterNews(by: currentCategory)
-            }
+        guard let senderButton = sender as? FilterButton, let currentButton = currentButton else {
+            return
+        }
+        
+        currentButton.isSelected = false
+        self.currentButton = senderButton
+        self.currentButton?.isSelected = true
+        
+        if let buttonText = senderButton.titleLabel?.text {
+            filterDelegate?.fitlerButtonTapped(with: buttonText)
         }
     }
-
 }

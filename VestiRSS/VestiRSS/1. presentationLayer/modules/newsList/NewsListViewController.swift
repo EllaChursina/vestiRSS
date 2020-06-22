@@ -17,8 +17,8 @@ final class NewsListViewController: UIViewController {
     // MARK: DI
     
     private let presentationAssembly: PresentationAssembly
-    private let networkManager: NetworkManager
-    private let newsListViewControllerDataProvider: NewsListViewControllerDataProvider
+    private var newsFeedNetworkService: NewsFeedNetworkService
+    private var newsCategoriesNetworkService: NewsCategoriesNetworkService
 
     
     // MARK: UI
@@ -41,6 +41,10 @@ final class NewsListViewController: UIViewController {
         return refreshControl
     }()
     
+    // MARK: multithreading
+    
+    private let newsDataQueue = DispatchQueue(label: "ellachursina.VestiRSS.newsDataQueue", qos: .userInitiated)
+    
     // MARK: Data
     
     private var rssItems = [NewsItem]()
@@ -50,17 +54,16 @@ final class NewsListViewController: UIViewController {
     
     init(
         presentationAssembly: PresentationAssembly,
-        networkManager: NetworkManager,
-        newsListViewControllerDataProvider: NewsListViewControllerDataProvider
-    ) {
+        newsFeedNetworkService: NewsFeedNetworkService,
+        newsCategoriesNetworkService: NewsCategoriesNetworkService) {
         self.presentationAssembly = presentationAssembly
-        self.networkManager = networkManager
-        self.newsListViewControllerDataProvider = newsListViewControllerDataProvider
+        self.newsFeedNetworkService = newsFeedNetworkService
+        self.newsCategoriesNetworkService = newsCategoriesNetworkService
         
         super.init(nibName: nil, bundle: nil)
-        fetchCategories()
-        setupView()
         
+        self.newsFeedNetworkService.delegate = self
+        self.newsCategoriesNetworkService.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -72,11 +75,18 @@ final class NewsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchData()
         prepareTableView()
-        
+        setupNavigationBar()
+        setupView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    
+        fetchCategories()
+        fetchData()
+    }
+        
     private func setupView() {
         view.addSubview(newsFilterScrollView)
         view.addSubview(newsListTableView)
@@ -85,18 +95,15 @@ final class NewsListViewController: UIViewController {
     }
     
     private func setupLayout() {
-        
         newsFilterScrollView.translatesAutoresizingMaskIntoConstraints = false
+        newsListTableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             newsFilterScrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
             newsFilterScrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
             newsFilterScrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            newsFilterScrollView.heightAnchor.constraint(equalToConstant: 100)
-        ])
-        
-        newsListTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
+            newsFilterScrollView.heightAnchor.constraint(equalToConstant: 100),
+            
             newsListTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             newsListTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             newsListTableView.topAnchor.constraint(equalTo: newsFilterScrollView.bottomAnchor),
@@ -109,28 +116,26 @@ final class NewsListViewController: UIViewController {
         
         newsListTableView.dataSource = self
         newsListTableView.delegate = self
-        
         newsListTableView.refreshControl = refreshControl
-        
         newsListTableView.estimatedRowHeight = Metrics.estimateHeight
         
         newsListTableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
     }
     
+    private func setupNavigationBar() {
+        navigationItem.title = Constants.navigationBarTitle
+        navigationController?.navigationBar.prefersLargeTitles = false 
+    }
+    
     private func fetchData() {
-        networkManager.downloadData(by: currentCategory) { [weak self] rssItems in
-            DispatchQueue.global().async {
-                self?.rssItems = rssItems
-                DispatchQueue.main.async {
-                    self?.newsListTableView.reloadData()
-                }
-            }
+        newsDataQueue.async {
+            self.newsFeedNetworkService.downloadData(by: self.currentCategory)
         }
     }
     
     private func fetchCategories() {
-        DispatchQueue.main.async {
-            self.newsFilterScrollView.categories = self.newsListViewControllerDataProvider.getNewsCategoryList()
+        newsDataQueue.async {
+            self.newsCategoriesNetworkService.downloadCategories()
         }
     }
     
@@ -170,16 +175,39 @@ extension NewsListViewController: UITableViewDelegate {
         
         navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
 
 // MARK: NewsFilterScrollViewDelegate
 
 extension NewsListViewController: NewsFilterScrollViewDelegate {
     
-    func filterNews(by category: String) {
-        currentCategory = category
+    func fitlerButtonTapped(with text: String) {
+        currentCategory = text
         fetchData()
     }
 }
+
+// MARK: NewsFeedNetworkServiceDelegate
+
+extension NewsListViewController: NewsFeedNetworkServiceDelegate {
+    
+    func didFetchNews(news: [NewsItem]) {
+        DispatchQueue.main.async {
+            self.rssItems = news
+            self.newsListTableView.reloadData()
+        }
+    }
+}
+
+// MARK: NewsCategoriesNetworkServiceDelegate
+
+extension NewsListViewController: NewsCategoriesNetworkServiceDelegate {
+    
+    func didFetchCategories(categories: [String]) {
+        DispatchQueue.main.async {
+            self.newsFilterScrollView.categories = categories
+        }
+    }
+}
+
 

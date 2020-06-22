@@ -12,7 +12,7 @@ final class NewsViewController: UIViewController {
     
     // MARK: DI
     
-    private let networkManager: NetworkManager
+    private let imageNetworkService: ImageNetworkService
     
     // MARK: Data
     
@@ -38,8 +38,8 @@ final class NewsViewController: UIViewController {
     
     // MARK: Initialization
     
-    init(networkManager: NetworkManager, rssItem: NewsItem) {
-        self.networkManager = networkManager
+    init(imageNetworkService: ImageNetworkService, rssItem: NewsItem) {
+        self.imageNetworkService = imageNetworkService
         self.rssItem = rssItem
         
         super.init(nibName: nil, bundle: nil)
@@ -90,7 +90,7 @@ final class NewsViewController: UIViewController {
     }
     
     private func fetchImage() {
-        networkManager.downloadImage(with: rssItem.imageURL) { [weak self] (image) in
+        imageNetworkService.downloadImage(with: rssItem.imageURL) { [weak self] (image) in
             DispatchQueue.global().async {
                 self?.newsView.configureImage(with: image)
             }

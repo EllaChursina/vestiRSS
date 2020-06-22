@@ -10,12 +10,12 @@ import Foundation
 
 protocol CoreAssembly {
     var newsListParser: NewsListParser { get }
-    var rssNewsCategoryProvider: RSSNewsCategoryProvider { get }
+    var newsCategoriesParser: NewsCategoriesParser { get }
 }
 
 final class CoreAssemblyImpl: CoreAssembly {
-    lazy var newsListParser = NewsListParser()
-    lazy var rssNewsCategoryProvider = RSSNewsCategoryProvider()
+    lazy var newsListParser: NewsListParser = NewsListParserImpl()
+    lazy var newsCategoriesParser: NewsCategoriesParser = NewsCategoriesParserImpl()
 }
 
 

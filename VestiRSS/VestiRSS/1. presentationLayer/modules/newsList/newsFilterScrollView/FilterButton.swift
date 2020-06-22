@@ -8,14 +8,15 @@
 
 import UIKit
 
-class FilterButton: UIButton {
+final class FilterButton: UIButton {
     
-    override open var isHighlighted: Bool {
+    override var isSelected: Bool {
         didSet {
-            backgroundColor = isHighlighted ? UIColor.black : UIColor.white
-            titleLabel?.font = isHighlighted ? UIFont.systemFont(ofSize: 14, weight: .bold) : UIFont.systemFont(ofSize: 14, weight: .semibold)
+            backgroundColor = isSelected ? UIColor.black : UIColor.white
+            titleLabel?.font = isSelected
+                ? UIFont.systemFont(ofSize: 14, weight: .bold)
+                : UIFont.systemFont(ofSize: 14, weight: .semibold)
         }
-        
     }
     
     override init(frame: CGRect) {
@@ -30,7 +31,7 @@ class FilterButton: UIButton {
     
     private func setupStyle() {
         setTitleColor(.black, for: .normal)
-        setTitleColor(.white, for: .highlighted)
+        setTitleColor(.white, for: .selected)
         
         backgroundColor = UIColor.white
         layer.cornerRadius = 10
@@ -40,5 +41,4 @@ class FilterButton: UIButton {
         contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 4, right: 8)
 
     }
-
 }

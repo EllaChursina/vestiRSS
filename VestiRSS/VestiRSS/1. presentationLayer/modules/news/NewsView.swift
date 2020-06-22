@@ -113,9 +113,10 @@ final class NewsView: UIView {
     }
     
     func configureData(with model: NewsViewModel) {
-
+        guard let publicationTime = PublicationTimeDateFormatter.convertDateFormat(for: model.publicationTime)
+        else { return }
         newsTitleLabel.text = model.title
-        publicationTimeLabel.text = model.publicationTime
+        publicationTimeLabel.text = publicationTime
         descriptionLabel.text = model.description
         
     }

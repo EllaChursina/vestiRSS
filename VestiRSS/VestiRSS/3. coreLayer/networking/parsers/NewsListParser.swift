@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol NewsListParser {
+    func parseData(url: String, completionHandler: (([NewsItem]) -> Void)?)
+}
+
 private enum XMLElement: String {
     case title
     case pubDate
@@ -15,7 +19,7 @@ private enum XMLElement: String {
     case category
 }
 
-final class NewsListParser: NSObject {
+final class NewsListParserImpl: NSObject, NewsListParser {
     
     private var rssItems: [NewsItem] = []
     
@@ -52,7 +56,7 @@ final class NewsListParser: NSObject {
     
     private var parserCompletionHandler: (([NewsItem]) -> Void)?
     
-    func parseFeed(url: String, completionHandler: (([NewsItem]) -> Void)?) {
+    func parseData(url: String, completionHandler: (([NewsItem]) -> Void)?) {
         parserCompletionHandler = completionHandler
         
         let request = URLRequest(url: URL(string: url)!)
@@ -78,7 +82,7 @@ final class NewsListParser: NSObject {
 
 // MARK: XML Parser Delegate
 
-extension NewsListParser: XMLParserDelegate {
+extension NewsListParserImpl: XMLParserDelegate {
     
     func parserDidStartDocument(_ parser: XMLParser) {
         rssItems = []
@@ -117,7 +121,7 @@ extension NewsListParser: XMLParserDelegate {
         case .title:
             currentTitle += string
         case .pubDate:
-            currentPubDate += string
+            currentPubDate += string.trimmingCharacters(in: .whitespacesAndNewlines)
         case .fullText:
             currentDescription += string
         case .category:

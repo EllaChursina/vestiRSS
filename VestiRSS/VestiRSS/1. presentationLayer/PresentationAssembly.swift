@@ -23,16 +23,14 @@ final class PresentationAssemblyImpl: PresentationAssembly {
     }
     
     func newsListViewController() -> NewsListViewController {
-        let vc = NewsListViewController(
-            presentationAssembly: self,
-            networkManager: serviceAssembly.networkManager,
-            newsListViewControllerDataProvider: serviceAssembly.newsListViewControllerDataProvider
-        )
+        let vc = NewsListViewController(presentationAssembly: self,
+                                        newsFeedNetworkService: serviceAssembly.newsFeedNetworkService,
+                                        newsCategoriesNetworkService: serviceAssembly.newsCategoriesNetworkService)
         return vc
     }
     
     func newsViewController(with rssItem: NewsItem) -> NewsViewController {
-        let vc = NewsViewController(networkManager: serviceAssembly.networkManager, rssItem: rssItem)
+        let vc = NewsViewController(imageNetworkService: serviceAssembly.imageNetworkService, rssItem: rssItem)
         
         return vc
     }

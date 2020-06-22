@@ -9,18 +9,25 @@
 import Foundation
 
 protocol ServiceAssembly {
-    var networkManager: NetworkManager { get }
-    var newsListViewControllerDataProvider: NewsListViewControllerDataProvider { get }
+    var newsFeedNetworkService: NewsFeedNetworkService { get }
+    var newsCategoriesNetworkService: NewsCategoriesNetworkService { get }
+    var imageNetworkService: ImageNetworkService { get }
 }
 
 final class ServiceAssemblyImpl: ServiceAssembly {
     
-    lazy var networkManager = NetworkManager(newsListParser: coreAssembly.newsListParser)
-    var newsListViewControllerDataProvider: NewsListViewControllerDataProvider
     private let coreAssembly: CoreAssembly
+    
+    var newsFeedNetworkService: NewsFeedNetworkService
+    
+    var newsCategoriesNetworkService: NewsCategoriesNetworkService
+    
+    lazy var imageNetworkService: ImageNetworkService = ImageNetworkServiceImpl()
+    
     
     init(coreAssembly: CoreAssembly) {
         self.coreAssembly = coreAssembly
-        self.newsListViewControllerDataProvider = NewsListViewControllerDataProvider(newsCategoryProvider: coreAssembly.rssNewsCategoryProvider)
+        self.newsFeedNetworkService = NewsFeedNetworkServiceImpl(newsListParser: coreAssembly.newsListParser)
+        self.newsCategoriesNetworkService = NewsCategoriesNetworkServiceImpl(newsCategoriesParser: coreAssembly.newsCategoriesParser)
     }
 }

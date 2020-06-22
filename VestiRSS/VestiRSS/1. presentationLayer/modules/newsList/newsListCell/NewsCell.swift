@@ -18,21 +18,6 @@ private enum Metrics {
 
 final class NewsCell: UITableViewCell {
     
-    // MARK: -Date Formatters
-    
-    private static let inputDateFormatter : DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
-        
-        return formatter
-    }()
-    
-    private static let outputDateFormatter : DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM HH:mm"
-        return formatter
-    }()
-    
     // MARK: UI
    
     private let newsTitleLabel: UILabel = {
@@ -93,19 +78,10 @@ final class NewsCell: UITableViewCell {
         ])
     }
     
-    private func setDateFormat(for dateString: String) {
-        print(dateString)
-        let myString = "Sun, 21 Jun 2020 19:17:49 +0000"
-        let inputDate =  NewsCell.inputDateFormatter.date(from: myString)
-        print(inputDate)
-//        let outputDate = NewsCell.outputDateFormatter.string(from: inputDate)
-//        print(outputDate)
-    }
-    
     func configure(with viewModel: NewsCellViewModel) {
-        setDateFormat(for: viewModel.publicationTime)
+        guard let publicationTime = PublicationTimeDateFormatter.convertDateFormat(for: viewModel.publicationTime)
+            else { return }
         newsTitleLabel.text = viewModel.title
-        publicationTimeLabel.text = viewModel.publicationTime
+        publicationTimeLabel.text = publicationTime
     }
-
 }
