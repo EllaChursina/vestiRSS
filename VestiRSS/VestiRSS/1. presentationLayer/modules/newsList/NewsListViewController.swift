@@ -124,7 +124,9 @@ final class NewsListViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.title = Constants.navigationBarTitle
-        navigationController?.navigationBar.prefersLargeTitles = false 
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: Constants.navigationBarBackButtonTitle, style: .plain, target: nil, action: nil)
     }
     
     private func fetchData() {

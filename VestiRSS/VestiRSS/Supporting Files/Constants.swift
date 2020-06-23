@@ -13,4 +13,5 @@ final class Constants {
     static let topNewsCategoryName = "Главные"
     static let baseLink = "https://www.vesti.ru/vesti.rss"
     static let navigationBarTitle = "ВЕСТИ.RU"
+    static let navigationBarBackButtonTitle = "Назад"
 }
