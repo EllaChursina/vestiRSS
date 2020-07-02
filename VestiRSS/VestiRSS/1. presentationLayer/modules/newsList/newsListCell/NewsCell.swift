@@ -26,6 +26,7 @@ final class NewsCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textAlignment = .left
         label.numberOfLines = 0
+        label.textColor = .black
         
         return label
     }()
@@ -55,6 +56,7 @@ final class NewsCell: UITableViewCell {
     
     private func setupView() {
         selectionStyle = .none
+        contentView.backgroundColor = .white
         contentView.addSubview(newsTitleLabel)
         contentView.addSubview(publicationTimeLabel)
         
@@ -71,7 +73,7 @@ final class NewsCell: UITableViewCell {
         
         publicationTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            publicationTimeLabel.topAnchor.constraint(equalTo: newsTitleLabel.bottomAnchor, constant: Metrics.internalPadding),
+            publicationTimeLabel.topAnchor.constraint(greaterThanOrEqualTo: newsTitleLabel.bottomAnchor, constant: Metrics.internalPadding),
             publicationTimeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Metrics.horizontalPadding),
             publicationTimeLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Metrics.horizontalPadding),
             publicationTimeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Metrics.verticalPadding)

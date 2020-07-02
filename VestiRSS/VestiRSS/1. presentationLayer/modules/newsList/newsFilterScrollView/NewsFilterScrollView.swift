@@ -12,6 +12,10 @@ protocol NewsFilterScrollViewDelegate: AnyObject {
     func fitlerButtonTapped(with text: String)
 }
 
+private enum Metrics {
+    static let padding: CGFloat = 5
+}
+
 final class NewsFilterScrollView: UIScrollView {
     
     weak var filterDelegate: NewsFilterScrollViewDelegate?
@@ -79,9 +83,9 @@ final class NewsFilterScrollView: UIScrollView {
     private func setupLayout(for button: FilterButton, title: String) {
         
         NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: leadingContraint, constant: 5),
-            button.topAnchor.constraint(equalTo: topAnchor),
-            button.bottomAnchor.constraint(equalTo: bottomAnchor),
+            button.leadingAnchor.constraint(equalTo: leadingContraint, constant: Metrics.padding),
+            button.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.padding),
+            button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Metrics.padding)
         ])
         
         leadingContraint = button.trailingAnchor

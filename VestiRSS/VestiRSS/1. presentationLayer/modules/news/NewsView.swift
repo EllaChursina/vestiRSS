@@ -34,6 +34,7 @@ final class NewsView: UIView {
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textAlignment = .left
         label.numberOfLines = 0
+        label.textColor = .black
         
         return label
     }()
@@ -55,6 +56,7 @@ final class NewsView: UIView {
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .left
         label.numberOfLines = 0
+        label.textColor = .black
 
         return label
     }()

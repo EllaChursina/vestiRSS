@@ -10,6 +10,7 @@ import UIKit
 
 private enum Metrics {
     static let estimateHeight: CGFloat = 46
+    static let filterScrollViewHeight: CGFloat = 103
 }
 
 final class NewsListViewController: UIViewController {
@@ -102,7 +103,7 @@ final class NewsListViewController: UIViewController {
             newsFilterScrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
             newsFilterScrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
             newsFilterScrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            newsFilterScrollView.heightAnchor.constraint(equalToConstant: 100),
+            newsFilterScrollView.heightAnchor.constraint(equalToConstant: Metrics.filterScrollViewHeight),
             
             newsListTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             newsListTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
@@ -118,6 +119,7 @@ final class NewsListViewController: UIViewController {
         newsListTableView.delegate = self
         newsListTableView.refreshControl = refreshControl
         newsListTableView.estimatedRowHeight = Metrics.estimateHeight
+        newsListTableView.backgroundColor = .white
         
         newsListTableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
     }

@@ -23,7 +23,7 @@ final class NewsViewController: UIViewController {
     private let contentScrollView: UIScrollView = {
         let contentScrollView = UIScrollView()
         contentScrollView.accessibilityIdentifier = "contentScrollView"
-        contentScrollView.backgroundColor = .white
+        contentScrollView.backgroundColor = .clear
         contentScrollView.autoresizingMask = UIView.AutoresizingMask.flexibleHeight
         
         return contentScrollView
